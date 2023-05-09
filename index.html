@@ -9,17 +9,16 @@
 </head>
 <body>
 
-
-    <script
-        src="three.js">
-    </script>
+    <script src="three.js"></script>
     <script>
         // Esto será el "canvas"
         const scene = new THREE.Scene();
+        // Setear color al background. (Si no dejamos color de fondo y admitimos "canal alpha", el fondo será transparente. La transparencia es una prop. del renderizador)
+        // scene.background = new THREE.Color(0x222222); -- Comentamos esta codeline porque hicimos transparente el background --
         // 75 = Ojo cámara / window = Ratio de anchura y altura / 0.1 = No se renderice lo que está "pegado al ojo del iris" / 1000 = No se renderice lo que está lejos (como los chunks de Minecraft)
         const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-        // Múltiples opciones de renderizado
-        const renderer = new THREE.WebGLRenderer();
+        // Hay múltiples opciones de renderizado. Podemos permitir transparencias con canal alpha, entre otras props.
+        const renderer = new THREE.WebGLRenderer({alpha: true});
         // Este próximo "window" podría ser un "div/main/header/etc"
         renderer.setSize(window.innerWidth, window.innerHeight);
         // Agregamos al DOM
@@ -30,10 +29,19 @@
         const material = new THREE.MeshBasicMaterial({color: 0x009900});
         // Creamos el objeto con la forma y la textura
         const cube = new THREE.Mesh(geometry, material);
+        // Posición del cubo con respecto al piso (Eje Y: 0)
+        cube.position.y = 1;
         // Añadimos el elemento que creamos a la escena
         scene.add(cube);
-        // Desplazamos la camara en el eje Z para que podamos ver el cubo que creamos 
+        // Creamos una grilla que funciona como piso. 1n° = Anchura y Altura de cuadrados (Área total del piso) / 2n° = Cantidad de cuadrados
+        const grid = new THREE.GridHelper(20,10);
+        // Añadimos el nuevo elemento a la escena
+        scene.add(grid);
+        // Desplazamos la camara en el eje Z para que podamos ver el cubo que creamos
         camera.position.z = 5;
+        camera.position.y = 2;
+        camera.position.x = 5;
+        camera.rotation.y = -150;
         // Creamos una función para decirle al renderer que renderize fotograma a fotograma nuestra escena y nuestra camara
         function animate() {
             requestAnimationFrame(animate);
