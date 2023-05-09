@@ -8,40 +8,57 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-
     <script src="three.js"></script>
     <script>
         // Esto será el "canvas"
         const scene = new THREE.Scene();
         // Setear color al background. (Si no dejamos color de fondo y admitimos "canal alpha", el fondo será transparente. La transparencia es una prop. del renderizador)
-        // scene.background = new THREE.Color(0x222222); -- Comentamos esta codeline porque hicimos transparente el background --
+        //scene.background = new THREE.Color(0x222222); -- Comentamos esta codeline porque hicimos transparente el background --
         // 75 = Ojo cámara / window = Ratio de anchura y altura / 0.1 = No se renderice lo que está "pegado al ojo del iris" / 1000 = No se renderice lo que está lejos (como los chunks de Minecraft)
         const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
         // Hay múltiples opciones de renderizado. Podemos permitir transparencias con canal alpha, entre otras props.
-        const renderer = new THREE.WebGLRenderer({alpha: true});
+        const renderer = new THREE.WebGLRenderer({ alpha: true });
         // Este próximo "window" podría ser un "div/main/header/etc"
         renderer.setSize(window.innerWidth, window.innerHeight);
+        // Permitimos proyección de sombras
+        renderer.shadowMap.enabled = true;
         // Agregamos al DOM
         document.body.appendChild(renderer.domElement);
         // Creamos un objeto de nombre "geometry". No hace falta que sea "box", hay un montón de tipos de figuras geométricas
-        const geometry = new THREE.BoxGeometry();
-        // Textura del objeto
-        const material = new THREE.MeshBasicMaterial({color: 0x009900});
+        const geometry = new THREE.BoxGeometry(1, 1, 1);
+        // Textura del objeto con "Basic Material"
+        const material = new THREE.MeshStandardMaterial({ color: 0x009900 });
         // Creamos el objeto con la forma y la textura
         const cube = new THREE.Mesh(geometry, material);
+        // Indicamos al cubo que proyectará sombras
+        cube.castShadow = true;
         // Posición del cubo con respecto al piso (Eje Y: 0)
-        cube.position.y = 1;
+        cube.position.set(0, 0, 1.5);
         // Añadimos el elemento que creamos a la escena
         scene.add(cube);
+        // Añadimos iluminación. Color e Intensidad
+        const light = new THREE.DirectionalLight(0xffffff, 1, 10);
+        // Posicionamiento de la luz
+        light.position.set(1, 1, 2);
+        // Castear luz. Para que el navegador reconozca la luz y la renderice, indicamos que esta genera sombra
+        light.castShadow = true;
+        // Añadimos la luz a escena
+        scene.add(light);
+        // Creamos un plano
+        const planeGeometry = new THREE.PlaneGeometry(5, 5, 32, 32);
+        const planeMaterial = new THREE.MeshStandardMaterial({ color: 0x990000 });
+        const plane = new THREE.Mesh(planeGeometry, planeMaterial);
+        plane.receiveShadow = true;
+        plane.position.set(0, 0, 0);
+        scene.add(plane);
         // Creamos una grilla que funciona como piso. 1n° = Anchura y Altura de cuadrados (Área total del piso) / 2n° = Cantidad de cuadrados
-        const grid = new THREE.GridHelper(20,10);
+        //const grid = new THREE.GridHelper(20,10);
         // Añadimos el nuevo elemento a la escena
-        scene.add(grid);
+        //scene.add(grid);
         // Desplazamos la camara en el eje Z para que podamos ver el cubo que creamos
         camera.position.z = 5;
-        camera.position.y = 2;
-        camera.position.x = 5;
-        camera.rotation.y = -150;
+        camera.position.y = -3;
+        camera.rotation.x = .5;
         // Creamos una función para decirle al renderer que renderize fotograma a fotograma nuestra escena y nuestra camara
         function animate() {
             requestAnimationFrame(animate);
@@ -49,9 +66,55 @@
             // Creamos una rotación en el eje X y el eje Y del cubo que se ejecutará en cada fotograma
             cube.rotation.x += 0.01;
             cube.rotation.y += 0.01;
+            // Rotación al plano
+            plane.rotation.z += 0.005;
         }
         // Llamamos a la función que se va a estar ejecutando en cada fotograma
         animate();
+
+
+
+        /* CÓDIGO SIN COMENTARIOS:
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer({alpha: true});
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.shadowMap.enabled = true;
+        document.body.appendChild(renderer.domElement);
+    
+        const geometry = new THREE.BoxGeometry(1,1,1);
+        const material = new THREE.MeshStandardMaterial({ color: 0x009900 });
+        const cube = new THREE.Mesh(geometry, material);
+        cube.castShadow = true;
+        cube.position.set(0,0,1.5);
+        scene.add(cube);
+    
+        const light = new THREE.DirectionalLight(0xffffff, 1, 10);
+        light.position.set(1,1,2);
+        light.castShadow = true;
+        scene.add(light);
+    
+        const planeGeometry = new THREE.PlaneGeometry(5,5,32,32);
+        const planeMaterial = new THREE.MeshStandardMaterial({ color: 0x990000 });
+        const plane = new THREE.Mesh(planeGeometry, planeMaterial);
+        plane.receiveShadow = true;
+        plane.position.set(0,0,0);
+        scene.add(plane);
+    
+        camera.position.z = 5;
+        camera.position.y = -3;
+        camera.rotation.x = .5;
+    
+        function animate() {
+            requestAnimationFrame(animate);
+            renderer.render(scene, camera);
+            cube.rotation.x += 0.01;
+            cube.rotation.y += 0.01;
+            plane.rotation.z += 0.005;
+        }
+    
+        animate();
+        */
     </script>
 </body>
 </html>
