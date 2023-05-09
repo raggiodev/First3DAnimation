@@ -27,7 +27,7 @@
         // Creamos un objeto de nombre "geometry". No hace falta que sea "box", hay un montón de tipos de figuras geométricas
         const geometry = new THREE.BoxGeometry(1, 1, 1);
         // Textura del objeto con "Basic Material"
-        const material = new THREE.MeshStandardMaterial({ color: 0x009900 });
+        const material = new THREE.MeshStandardMaterial({ color: 0x0000cc });
         // Creamos el objeto con la forma y la textura
         const cube = new THREE.Mesh(geometry, material);
         // Indicamos al cubo que proyectará sombras
@@ -37,7 +37,7 @@
         // Añadimos el elemento que creamos a la escena
         scene.add(cube);
         // Añadimos iluminación. Color e Intensidad
-        const light = new THREE.DirectionalLight(0xffffff, 1, 10);
+        const light = new THREE.DirectionalLight(0xffffff, 1, 100);
         // Posicionamiento de la luz
         light.position.set(1, 1, 2);
         // Castear luz. Para que el navegador reconozca la luz y la renderice, indicamos que esta genera sombra
@@ -46,7 +46,7 @@
         scene.add(light);
         // Creamos un plano
         const planeGeometry = new THREE.PlaneGeometry(5, 5, 32, 32);
-        const planeMaterial = new THREE.MeshStandardMaterial({ color: 0x990000 });
+        const planeMaterial = new THREE.MeshStandardMaterial({ color: 0x990040 });
         const plane = new THREE.Mesh(planeGeometry, planeMaterial);
         plane.receiveShadow = true;
         plane.position.set(0, 0, 0);
