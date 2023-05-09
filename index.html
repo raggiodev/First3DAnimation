@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>First 3D App - Three.js - JoeTheorium</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+
+    <script
+        src="three.js">
+    </script>
+    <script>
+        // Esto será el "canvas"
+        const scene = new THREE.Scene();
+        // 75 = Ojo cámara / window = Ratio de anchura y altura / 0.1 = No se renderice lo que está "pegado al ojo del iris" / 1000 = No se renderice lo que está lejos (como los chunks de Minecraft)
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        // Múltiples opciones de renderizado
+        const renderer = new THREE.WebGLRenderer();
+        // Este próximo "window" podría ser un "div/main/header/etc"
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        // Agregamos al DOM
+        document.body.appendChild(renderer.domElement);
+        // Creamos un objeto de nombre "geometry". No hace falta que sea "box", hay un montón de tipos de figuras geométricas
+        const geometry = new THREE.BoxGeometry();
+        // Textura del objeto
+        const material = new THREE.MeshBasicMaterial({color: 0x009900});
+        // Creamos el objeto con la forma y la textura
+        const cube = new THREE.Mesh(geometry, material);
+        // Añadimos el elemento que creamos a la escena
+        scene.add(cube);
+        // Desplazamos la camara en el eje Z para que podamos ver el cubo que creamos 
+        camera.position.z = 5;
+        // Creamos una función para decirle al renderer que renderize fotograma a fotograma nuestra escena y nuestra camara
+        function animate() {
+            requestAnimationFrame(animate);
+            renderer.render(scene, camera);
+            // Creamos una rotación en el eje X y el eje Y del cubo que se ejecutará en cada fotograma
+            cube.rotation.x += 0.01;
+            cube.rotation.y += 0.01;
+        }
+        // Llamamos a la función que se va a estar ejecutando en cada fotograma
+        animate();
+    </script>
+</body>
+</html>
