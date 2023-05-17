@@ -4,13 +4,16 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>First 3D App - Three.js - JoeTheorium</title>
     <link rel="stylesheet" href="style.css">
+    <title>First 3D Animation - Three.js - JoeTheorium</title>
 </head>
 <body>
-    <script src="three.js"></script>
-    <script>
-        // Esto será el "canvas"
+    <!-- <script src="three.js"></script> -->
+    <script type="module">
+        import * as THREE from './three.module.js';
+        import { OrbitControls } from './orbitcontrols.js';
+
+        // Esto será el "canvas", donde trabajamos
         const scene = new THREE.Scene();
         // Setear color al background. (Si no dejamos color de fondo y admitimos "canal alpha", el fondo será transparente. La transparencia es una prop. del renderizador)
         //scene.background = new THREE.Color(0x222222); -- Comentamos esta codeline porque hicimos transparente el background --
@@ -59,6 +62,8 @@
         camera.position.z = 5;
         camera.position.y = -3;
         camera.rotation.x = .5;
+        // Creamos una órbita para poder visualizar la cámara desde otros puntos con zoom
+        const controls = new OrbitControls(camera, renderer.domElement);
         // Creamos una función para decirle al renderer que renderize fotograma a fotograma nuestra escena y nuestra camara
         function animate() {
             requestAnimationFrame(animate);
@@ -71,50 +76,50 @@
         }
         // Llamamos a la función que se va a estar ejecutando en cada fotograma
         animate();
-
-
-
-        /* CÓDIGO SIN COMENTARIOS:
-        const scene = new THREE.Scene();
-        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-        const renderer = new THREE.WebGLRenderer({alpha: true});
-        renderer.setSize(window.innerWidth, window.innerHeight);
-        renderer.shadowMap.enabled = true;
-        document.body.appendChild(renderer.domElement);
-    
-        const geometry = new THREE.BoxGeometry(1,1,1);
-        const material = new THREE.MeshStandardMaterial({ color: 0x009900 });
-        const cube = new THREE.Mesh(geometry, material);
-        cube.castShadow = true;
-        cube.position.set(0,0,1.5);
-        scene.add(cube);
-    
-        const light = new THREE.DirectionalLight(0xffffff, 1, 10);
-        light.position.set(1,1,2);
-        light.castShadow = true;
-        scene.add(light);
-    
-        const planeGeometry = new THREE.PlaneGeometry(5,5,32,32);
-        const planeMaterial = new THREE.MeshStandardMaterial({ color: 0x990000 });
-        const plane = new THREE.Mesh(planeGeometry, planeMaterial);
-        plane.receiveShadow = true;
-        plane.position.set(0,0,0);
-        scene.add(plane);
-    
-        camera.position.z = 5;
-        camera.position.y = -3;
-        camera.rotation.x = .5;
-    
-        function animate() {
-            requestAnimationFrame(animate);
-            renderer.render(scene, camera);
-            cube.rotation.x += 0.01;
-            cube.rotation.y += 0.01;
-            plane.rotation.z += 0.005;
-        }
-    
-        animate();
-        */
     </script>
 </body>
 </html>
+
+<!-- CÓDIGO SIN COMENTARIOS:
+const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+const renderer = new THREE.WebGLRenderer({alpha: true});
+renderer.setSize(window.innerWidth, window.innerHeight);
+renderer.shadowMap.enabled = true;
+document.body.appendChild(renderer.domElement);
+
+const geometry = new THREE.BoxGeometry(1,1,1);
+const material = new THREE.MeshStandardMaterial({ color: 0x009900 });
+const cube = new THREE.Mesh(geometry, material);
+cube.castShadow = true;
+cube.position.set(0,0,1.5);
+scene.add(cube);
+
+const light = new THREE.DirectionalLight(0xffffff, 1, 10);
+light.position.set(1,1,2);
+light.castShadow = true;
+scene.add(light);
+
+const planeGeometry = new THREE.PlaneGeometry(5,5,32,32);
+const planeMaterial = new THREE.MeshStandardMaterial({ color: 0x990000 });
+const plane = new THREE.Mesh(planeGeometry, planeMaterial);
+plane.receiveShadow = true;
+plane.position.set(0,0,0);
+scene.add(plane);
+
+camera.position.z = 5;
+camera.position.y = -3;
+camera.rotation.x = .5;
+
+const controls = new OrbitControls(camera, renderer.domElement);
+
+function animate() {
+requestAnimationFrame(animate);
+renderer.render(scene, camera);
+cube.rotation.x += 0.01;
+cube.rotation.y += 0.01;
+plane.rotation.z += 0.005;
+}
+
+animate();
+-->
