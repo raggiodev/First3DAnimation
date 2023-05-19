@@ -74,9 +74,9 @@
             cube.rotation.x += 0.01;
             cube.rotation.y += 0.01;
             let z = cube.position.z;
-            if(z>3){minMaxElevation = false};
-            if(z<1){minMaxElevation = true};
-            minMaxElevation ? cube.position.z +=0.01 : cube.position.z -= 0.01;
+            if(z>3){elevation = false};
+            if(z<1){elevation = true};
+            elevation ? cube.position.z +=0.01 : cube.position.z -= 0.01;
             // Rotación al plano
             plane.rotation.z += 0.005;
         }
